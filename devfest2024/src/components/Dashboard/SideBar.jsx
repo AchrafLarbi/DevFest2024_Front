@@ -8,8 +8,20 @@ import {
   LogOut,
 } from "lucide-react";
 import smartband from "../../assets/icons/smartband.svg";
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const SideBar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove tokens from localStorage
+    localStorage.removeItem("access token");
+    localStorage.removeItem("refresh token");
+
+    // Redirect to the login page
+    navigate("/login");
+  };
+
   return (
     <div className="bg-white w-64 min-h-screen p-4 flex flex-col justify-between">
       <div>
@@ -57,7 +69,10 @@ const Sidebar = () => {
       </div>
 
       <div>
-        <button className="flex items-center space-x-3 px-4 py-2 rounded-md w-full text-gray-600 hover:text-blue-600 hover:underline">
+        <button
+          onClick={handleLogout}
+          className="flex items-center space-x-3 px-4 py-2 rounded-md w-full text-gray-600 hover:text-blue-600 hover:underline"
+        >
           <LogOut size={20} />
           <span>Log out</span>
         </button>
@@ -66,4 +81,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SideBar;
