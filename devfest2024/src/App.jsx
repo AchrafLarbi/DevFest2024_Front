@@ -8,6 +8,10 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Index from "./components/Dashboard/Index";
 import Login from "./components/Login/Login";
 import Nodes from "./components/Nodes/Nodes";
+import Topology from "./components/Topology/Topology";
+import Traffic from "./components/Traffic/Traffic";
+import Model from "./components/model/model";
+import Settings from "./components/Settings/settings";
 
 const isAuthenticated = () => {
   const accessToken = localStorage.getItem("access token");
@@ -34,6 +38,22 @@ const router = createBrowserRouter([
       {
         path: "nodes",
         element: <Nodes />,
+      },
+      {
+        path: "Topology",
+        element: <Topology />,
+      },
+      {
+        path: "Traffic",
+        element: <Traffic />,
+      },
+      {
+        path: "Model",
+        element: <Model />,
+      },
+      {
+        path: "Settings",
+        element: <Settings/>,
       },
     ],
   },

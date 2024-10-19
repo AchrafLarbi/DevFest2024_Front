@@ -1,150 +1,82 @@
-import { useState } from "react";
-import { Edit, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { Edit, Trash2, Search } from "lucide-react";
 
 const TableComponent = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [nodesData, setNodesData] = useState([]);
 
-  const nodesData = [
-    {
-      id: 1,
-      ip: "10.10.10.10",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Connected",
-    },
-    {
-      id: 2,
-      ip: "11.11.11.11",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Connected",
-    },
-    {
-      id: 3,
-      ip: "12.12.12.12",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Disconnected",
-    },
-    {
-      id: 4,
-      ip: "13.13.13.13",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Disconnected",
-    },
-    {
-      id: 5,
-      ip: "14.14.14.14",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Disconnected",
-    },
-    {
-      id: 6,
-      ip: "15.15.15.15",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Connected",
-    },
-    {
-      id: 7,
-      ip: "16.16.16.16",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Connected",
-    },
-    {
-      id: 8,
-      ip: "17.17.17.17",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Connected",
-    },
-    {
-      id: 9,
-      ip: "18.18.18.18",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Disconnected",
-    },
-    {
-      id: 10,
-      ip: "19.19.19.19",
-      requested: "10 mbps",
-      allocated: "1 mbps",
-      status: "Disconnected",
-    },
-  ];
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/clients/metrics/")
+      .then((response) => {
+        const data = response.data;
 
-  // Filtering the data based on search term
+        const formattedData = data.map((item) => {
+          const [date, time] = item.timestamp.split("T");
+          return {
+            id: item.id,
+            client: item.client,
+            bwRequested: item.bw_requested,
+            frames: item.frames,
+            bytes: item.bytes,
+            date,
+            time: time.split(".")[0],
+          };
+        });
+        setNodesData(formattedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
   const filteredData = nodesData.filter(
     (node) =>
-      node.ip.includes(searchTerm) ||
-      node.status.toLowerCase().includes(searchTerm.toLowerCase())
+      node.client.toString().includes(searchTerm) ||
+      node.id.toString().includes(searchTerm)
   );
 
   return (
-    <div className="p-6">
-      {/* Search bar */}
-      <div className="mb-4">
+    <div className="w-full h-full p-6">
+      <div className="relative mb-4">
+        <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none mr-6">
+          <Search />
+        </span>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search by client or ID..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-lg"
+          className="w-full p-2 pl-10 border border-gray-300 rounded-lg"
         />
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-collapse border border-gray-300">
+        <table className="min-w-full table-auto">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Node ID
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                IP address
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Requested bandwidth
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Allocated bandwidth
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Status
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Action
-              </th>
+              <th className="px-4 py-2 text-left">ID</th>
+              <th className=" px-4 py-2 text-left">Client</th>
+              <th className=" px-4 py-2 text-left">BW Requested</th>
+              <th className=" px-4 py-2 text-left">Frames</th>
+              <th className=" px-4 py-2 text-left">Bytes</th>
+              <th className=" px-4 py-2 text-left">Date</th>
+              <th className=" px-4 py-2 text-left">Time</th>
+              <th className=" px-4 py-2 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.map((node) => (
               <tr key={node.id} className="odd:bg-blue-50">
-                <td className="border border-gray-300 px-4 py-2">{node.id}</td>
-                <td className="border border-gray-300 px-4 py-2">{node.ip}</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {node.requested}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {node.allocated}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <span
-                    className={`px-2 py-1 rounded ${
-                      node.status === "Connected"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {node.status}
-                  </span>
-                </td>
-                <td className="border border-gray-300 px-4 py-2 flex space-x-2">
+                <td className="px-4 py-2">{node.id}</td>
+                <td className="px-4 py-2">{node.client}</td>
+                <td className="px-4 py-2">{node.bwRequested}</td>
+                <td className="px-4 py-2">{node.frames}</td>
+                <td className="px-4 py-2">{node.bytes}</td>
+                <td className="px-4 py-2">{node.date}</td>
+                <td className="px-4 py-2">{node.time}</td>
+                <td className="px-4 py-2 flex space-x-2">
                   <button className="text-blue-500 hover:text-blue-700">
                     <Edit size={16} />
                   </button>

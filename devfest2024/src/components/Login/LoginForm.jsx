@@ -44,7 +44,6 @@ const LoginForm = () => {
         localStorage.setItem("user", data.username); // Directly using data.username
         localStorage.setItem("userEmail", data.email); // Directly using data.email
 
-        alert(data.message); // Alert the login success message
         navigate("/");
       } else if (response.status === 401) {
         alert("Invalid email or password");
@@ -93,22 +92,30 @@ const LoginForm = () => {
           <label className="block text-[#026AA2] text-sm font-bold mb-2">
             Password
           </label>
-          <input
-            type={showPassword ? "text" : "password"}
-            className="w-full h-[60px] p-4 text-gray-500 bg-blue-50 rounded-2xl text-[13px] border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Securely enter your password..."
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-          {showPassword ? (
-            <EyeSlashIcon
-              className="h-5 w-5 text-black"
-              onClick={togglePasswordVisibility}
+          <div className="relative mb-4">
+            <span className="absolute inset-y-0 right-0 pl-3 flex items-center mr-6">
+              {showPassword ? (
+                <EyeSlashIcon
+                  className="h-5 w-5 text-black cursor-pointer"
+                  onClick={togglePasswordVisibility} 
+                />
+              ) : (
+                <EyeIcon
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={togglePasswordVisibility} 
+                />
+              )}
+            </span>
+            <input
+              type={showPassword ? "text" : "password"}
+              className="w-full h-[60px] p-4 text-gray-500 bg-blue-50 rounded-2xl text-[13px] border border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Securely enter your password..."
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
-          ) : (
-            <EyeIcon className="h-5 w-5" onClick={togglePasswordVisibility} />
-          )}
+          </div>
+
         </div>
 
         <div className="flex flex-row justify-between items-center mb-6">
