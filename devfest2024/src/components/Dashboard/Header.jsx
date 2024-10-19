@@ -1,12 +1,9 @@
-/* eslint-disable react/prop-types */
-
 import { useEffect, useState } from "react";
 import profilepicture from "../../assets/icons/profilepicture.svg";
 
 const Header = () => {
   const [userData, setUserData] = useState({ username: "", email: "" });
 
-  // Fetch username and email from local storage
   useEffect(() => {
     const storedUsername = localStorage.getItem("user");
     const storedEmail = localStorage.getItem("userEmail");
@@ -22,10 +19,10 @@ const Header = () => {
   return (
     <div className="flex justify-between items-center m-6 w-[95%]">
       <div className="flex flex-col">
-        <h1 className="text-ml font-bold text-[#535862]">
+        <h1 className="text-ml font-bold text-[#535862] hidden lg:block">
           Hi {userData.username || "User"},
         </h1>
-        <h1 className="text-2xl font-bold text-[#303841]">
+        <h1 className="text-2xl font-bold text-[#303841] hidden lg:block">
           Welcome to SmartBand!
         </h1>
       </div>
