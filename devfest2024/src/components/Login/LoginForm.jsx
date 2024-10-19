@@ -35,12 +35,16 @@ const LoginForm = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log(data); // Log the entire response to check its structure
 
       if (response.status === 200) {
+        // Store the tokens and user information in local storage
         localStorage.setItem("access token", data.token.access);
         localStorage.setItem("refresh token", data.token.refresh);
-        alert("Login successful");
+        localStorage.setItem("user", data.username); // Directly using data.username
+        localStorage.setItem("userEmail", data.email); // Directly using data.email
+
+        alert(data.message); // Alert the login success message
         navigate("/");
       } else if (response.status === 401) {
         alert("Invalid email or password");

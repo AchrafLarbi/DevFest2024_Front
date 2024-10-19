@@ -7,6 +7,7 @@ import {
 import Dashboard from "./components/Dashboard/Dashboard";
 import Index from "./components/Dashboard/Index";
 import Login from "./components/Login/Login";
+import Nodes from "./components/Nodes/Nodes";
 
 const isAuthenticated = () => {
   const accessToken = localStorage.getItem("access token");
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "nodes",
+        element: <Nodes />,
       },
     ],
   },

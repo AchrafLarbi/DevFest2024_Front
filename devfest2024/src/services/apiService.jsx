@@ -4,20 +4,16 @@ const disconnectedUsers = 26;
 
 const apiService = {
   fetchBandwidthData: async () => {
-    // Replace with actual API call
     return [
       { name: "00", allocated: 40, cir: 20, maxAllocated: 100, mir: 30 },
       { name: "01", allocated: 30, cir: 20, maxAllocated: 100, mir: 40 },
-      // ...more data
     ];
   },
 
   fetchUserConsumptionData: async () => {
-    // Replace with actual API call
     return [
       { name: "00", maxBandwidth: 100, totalConsumption: 30 },
       { name: "01", maxBandwidth: 100, totalConsumption: 45 },
-      // ...more data
     ];
   },
 
@@ -39,6 +35,12 @@ const apiService = {
         percentage: (disconnectedUsers / totalUsers) * 100,
       },
     ];
+  },
+  fetchUserInfo: async () => {
+    const storedUsername = localStorage.getItem("user");
+    const storedUserEmail = localStorage.getItem("userEmail");
+
+    return { userName: storedUsername, userEmail: storedUserEmail };
   },
 };
 

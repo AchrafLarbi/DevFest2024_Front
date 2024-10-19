@@ -8,7 +8,7 @@ import {
   LogOut,
 } from "lucide-react";
 import smartband from "../../assets/icons/smartband.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -32,8 +32,8 @@ const SideBar = () => {
           </h1>
         </div>
         <nav className="space-y-2">
-          <a
-            href="#"
+          <Link
+            to="/"
             className="flex items-center space-x-3 bg-white px-4 py-2 rounded-md text-[#BDBDBD] hover:text-blue-600 group"
           >
             <Home size={20} />
@@ -43,17 +43,21 @@ const SideBar = () => {
                 •
               </span>
             </span>
-          </a>
+          </Link>
           {[
-            { icon: Server, label: "Nodes" },
-            { icon: Share2, label: "Topology" },
-            { icon: Sliders, label: "Traffic shaping" },
-            { icon: Brain, label: "AI model" },
-            { icon: Settings, label: "Settings" },
-          ].map(({ icon: Icon, label }) => (
-            <a
+            { icon: Server, label: "Nodes", path: "/nodes" },
+            { icon: Share2, label: "Topology", path: "/topology" },
+            {
+              icon: Sliders,
+              label: "Traffic shaping",
+              path: "/traffic-shaping",
+            },
+            { icon: Brain, label: "AI model", path: "/ai-model" },
+            { icon: Settings, label: "Settings", path: "/settings" },
+          ].map(({ icon: Icon, label, path }) => (
+            <Link
               key={label}
-              href="#"
+              to={path}
               className="relative flex items-center space-x-3 px-4 py-2 rounded-md text-[#BDBDBD] hover:text-blue-600 group"
             >
               <Icon size={20} />
@@ -63,7 +67,7 @@ const SideBar = () => {
                   •
                 </span>
               </span>
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
